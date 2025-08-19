@@ -15,12 +15,12 @@
 
 ## 📁 Uppbygging repositories
 
-.
-├── README.md → Þessi skrá
-├── verkefni/ → Möppu fyrir verkefnaskil
-│ ├── verkefni1/
-│ ├── verkefni2/
-│ └── ...
+.<br>
+├── README.md → Þessi skrá <br>
+├── verkefni/ → Möppu fyrir verkefnaskil<br>
+│ ├── verkefni1/<br>
+│ ├── verkefni2/<br>
+│ └── ...<br>
 └── docs/ → (valkvætt) skýringarmyndir, glósur o.fl.
 
 
