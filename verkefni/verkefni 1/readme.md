@@ -14,7 +14,4 @@
 
 
 **Video demonstration of part 1**
-<video controls>
-  <source src="./VID_20250826_124338.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![alt text](VID_20250826_124338.gif)
