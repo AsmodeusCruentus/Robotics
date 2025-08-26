@@ -3,10 +3,9 @@
 /*    Module:       main.cpp                                                  */
 /*    Author:       VEX                                                       */
 /*    Created:      Wed Sep 25 2019                                           */
-/*    Description:  Moving Forward (mm)                                       */
+/*    Description:  Turning Left (degrees)                                   */
 /*                                                                            */
-/*    This Program drives the robot forward for 150 millimeters.              */
-/*                                                                            */
+/*    This program turns the robot 90 degrees to the left                    */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
@@ -21,19 +20,8 @@
 using namespace vex;
 
 int main() {
-  
+  // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-
-  //turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, right};
-
-  turnType turns[] = {right, left, right, left, right, left, right, left, right};
-
-  for (auto turn : turns) {
-    Drivetrain.driveFor(forward, 500, mm); 
-    Drivetrain.turnFor(turn, 90, degrees);  
-  }
-
-  Drivetrain.driveFor(forward, 500, mm);    
+  // turns the robot left 90 degrees
+  Drivetrain.turnFor(left, 90, degrees);
 }
- 
- 

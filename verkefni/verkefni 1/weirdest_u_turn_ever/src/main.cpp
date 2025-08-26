@@ -1,38 +1,28 @@
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*    Module:       main.cpp                                                  */
-/*    Author:       VEX                                                       */
-/*    Created:      Wed Sep 25 2019                                           */
-/*    Description:  Moving Forward (mm)                                       */
-/*                                                                            */
-/*    This Program drives the robot forward for 150 millimeters.              */
-/*                                                                            */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1(left wheel), 3(right wheel), D
-// ---- END VEXCODE CONFIGURED DEVICES ----
 #include "vex.h"
-
 using namespace vex;
 
 int main() {
   vexcodeInit();
 
-  turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, right};
-  int numTurns = sizeof(turns)/sizeof(turns[0]);
+  Drivetrain.setDriveVelocity(50, percent);
+  Drivetrain.setTurnVelocity(40, percent);
+  Drivetrain.setStopping(hold);
 
-  for(int i = 0; i < numTurns; i++) {
-    Drivetrain.driveFor(forward, 500, mm);
-    wait(200, msec);
-    Drivetrain.turnFor(turns[i], 90, degrees);
-    wait(200, msec);
+  const double L = 500; // each straight = 50 cm
+
+  // 12 relative 90° turns that trace your diagram.
+  // R, L, L, R, R, L, R, R, R, L, R, R
+  turnType turns[] = {
+    right, left, left, right, right, left,
+    right, right, right, left, right, right
+  };
+  int n = sizeof(turns)/sizeof(turns[0]);
+
+  for (int i = 0; i < n; i++) {
+    Drivetrain.driveFor(forward, L, mm);
+    Drivetrain.turnFor(turns[i], 90, degrees, true);
+    wait(100, msec);
   }
-
-  Drivetrain.driveFor(forward, 500, mm);
-  wait(200, msec);
+  // Final straight to the “End”
+  Drivetrain.driveFor(forward, L, mm);
 }
- 
