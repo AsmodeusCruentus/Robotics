@@ -13,7 +13,7 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 10, D
+// Drivetrain           drivetrain    1(left wheel), 3(right wheel), D
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -23,6 +23,19 @@ using namespace vex;
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+  int i = 500;
 
-  Drivetrain.driveFor(forward, 150, mm);
+while (true) {
+  if (i >= 2500) {break;}
+
+  Drivetrain.driveFor(forward, i, mm);
+  wait(200, msec);
+
+  Drivetrain.driveFor(reverse, i, mm);
+  wait(200, msec); 
+
+  i += 500;  
+}
+
+
 }
