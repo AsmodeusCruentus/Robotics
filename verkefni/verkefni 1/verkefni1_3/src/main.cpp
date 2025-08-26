@@ -24,16 +24,12 @@ int main() {
   
   vexcodeInit();
 
-  #turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, right};
-
-  turnType turns[] = {right, left, right, left, right, left, right, left, right};
+  turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, left, right};
 
   for (auto turn : turns) {
     Drivetrain.driveFor(forward, 500, mm); 
     Drivetrain.turnFor(turn, 90, degrees);  
+    Drivetrain.stop();
   }
 
-  Drivetrain.driveFor(forward, 500, mm);    
-}
- 
- 
+  
