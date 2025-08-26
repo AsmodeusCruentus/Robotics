@@ -20,45 +20,21 @@
 
 using namespace vex;
 
-int main() {
-  vexcodeInit();
+
   int main() {
   vexcodeInit();
 
-  turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, right};
-  int numTurns = sizeof(turns)/sizeof(turns[0]);
-
-  for(int i = 0; i < numTurns; i++) {
+  turnType turns[] = {right, left, left, right, right, left, right, right, left, right, right, left, left, right};
+  
+  for (auto turn : turns) {
     Drivetrain.driveFor(forward, 500, mm);
     wait(200, msec);
-    Drivetrain.turnFor(turns[i], 90, degrees);
+    Drivetrain.turnFor(turn, 90, degrees);
     wait(200, msec);
   }
 
   Drivetrain.driveFor(forward, 500, mm);
   wait(200, msec);
-}}
- 
- 
- 
- 
- 
- 
-  '''
-  int i = 500;
-
-while (true) {
-  if (i >= 2500) {break;}
-
-  Drivetrain.driveFor(forward, i, mm);
-  wait(200, msec);
-
-  Drivetrain.driveFor(reverse, i, mm);
-  wait(200, msec); 
-
-  i += 500;  
-}
 
 
 }
-'''
