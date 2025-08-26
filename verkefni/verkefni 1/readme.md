@@ -11,6 +11,7 @@
     port 8 = ??
     port 9 = ??
     port 10 = ??
+    port 20 = inertia sensor
 
 
 **Video demonstration of part 1**
