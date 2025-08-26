@@ -11,3 +11,10 @@
     port 8 = ??
     port 9 = ??
     port 10 = ??
+
+
+**Video demonstration of part 1**
+<video controls>
+  <source src="./video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
