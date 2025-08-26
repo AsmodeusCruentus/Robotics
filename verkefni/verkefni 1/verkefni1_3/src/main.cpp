@@ -24,7 +24,9 @@ int main() {
   
   vexcodeInit();
 
-  turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, right};
+  #turnType turns[] = {right, left, left, right, right, left, right, right, left, right, left, right};
+
+  turnType turns[] = {right, left, right, left, right, left, right, left, right};
 
   for (auto turn : turns) {
     Drivetrain.driveFor(forward, 500, mm); 
