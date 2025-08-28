@@ -1,27 +1,41 @@
-Vex controller
+# VEX Controller Key Mapping
 
-L1 - raises arm<br>
-L2 - Lowers arm<br>
+## Arm Controls
+| Button | Action         |
+|--------|----------------|
+| **L1** | Raise Arm      |
+| **L2** | Lower Arm      |
 
-R1 - Opens Claw<br>
-R2 - Closes claw<br>
+## Claw Controls
+| Button | Action         |
+|--------|----------------|
+| **R1** | Open Claw      |
+| **R2** | Close Claw     |
 
-Left-stick forward - left motor forward ( Axis 1 )<br>
-Left-stick backwards - left motor backwards ( Axis 2 )<br>
+## Drive Controls
+| Control Stick           | Action                      |
+|-------------------------|-----------------------------|
+| Left Stick Forward      | Left Motor Forward (Axis 1) |
+| Left Stick Backward     | Left Motor Backward (Axis 2)|
+| Right Stick Forward     | Right Motor Forward (Axis 3)|
+| Right Stick Backward    | Right Motor Backward (Axis 4)|
 
-Right-stick forward - Right motor forward ( Axis 3 )<br>
-Right-stick backwards - Right motor backwards ( Axis 4 )<br>
+## D-Pad
+| Direction | Action  |
+|-----------|---------|
+| Up        | —       |
+| Down      | —       |
+| Left      | —       |
+| Right     | —       |
 
-D-Pad Up - nothing<br>
-D-Pad Down - nothing<br>
-D-Pad Left - nothing<br>
-D-Pad Right - nothing<br>
+## Face Buttons
+| Button | Action |
+|--------|--------|
+| X      | —      |
+| Y      | —      |
+| A      | —      |
+| B      | Emergency Brake (disables controller & stops all mobility) |
 
-X-Button - nothing<br>
-Y-Button - nothing<br>
-A-Button - nothing<br>
-B-Button - Emergency break, effectively disabled controller and stops all mobility<br>
+---
 
-
-
-![Alt text](./Vex_Controller_Diagram_key_mapping.png)
+![VEX Controller Diagram](./Vex_Controller_Diagram_key_mapping.png)
