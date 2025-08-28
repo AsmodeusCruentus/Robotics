@@ -39,3 +39,6 @@
 ---
 
 ![VEX Controller Diagram](./Vex_Controller_Diagram_key_mapping.png)
+
+
+![VEX Controller Diagram](./Robot_Controller_THink_map_diagram.png)
