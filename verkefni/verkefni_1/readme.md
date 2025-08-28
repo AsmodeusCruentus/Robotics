@@ -19,6 +19,7 @@
 
 
 **Video demonstration of part 1**
+The GIF can take up to 30 seconds to load, blame GITHUB
 <br>
 ![alt text](VID_1.gif)
 
@@ -26,7 +27,7 @@
 ![Alt text](./Robotics_thinkmap_part_2_fixed.png)
 
 
-
 **Video Demonstration of part 2**
-
+The GIF can take up to 30 seconds to load, blame GITHUB
+<br>
 ![alt text](VID_2.2.gif)
