@@ -14,7 +14,7 @@
     port 20 = inertia sensor
 
 
-![Alt text](./robotics_thinkmap_part_1.drawio.png)
+![Alt text](./robotics_thinkmap_part_1.png)
 
 
 
@@ -23,7 +23,7 @@
 ![alt text](VID_1.gif)
 
 
-![Alt text](./Robotics_thinkmap_part_2.drawio.png)
+![Alt text](./Robotics_thinkmap_part_2.png)
 
 
 
