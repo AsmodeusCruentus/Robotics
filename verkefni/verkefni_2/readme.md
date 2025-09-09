@@ -42,3 +42,11 @@
 
 
 ![VEX Controller Diagram](./Robot_Controller_THink_map_diagram.png)
+
+
+
+![alt text](-----.gif)
+
+![alt text](-----.gif)
+
+![alt text](-----.gif)
