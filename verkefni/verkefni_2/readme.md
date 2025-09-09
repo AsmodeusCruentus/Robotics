@@ -45,8 +45,10 @@
 
 
 
-![alt text](-----.gif)
+![alt text](./pickup_cube_compressed.gif)
 
-![alt text](-----.gif)
 
-![alt text](-----.gif)
+![alt text](./controller_emergency_instant_stop_compressed.gif)
+
+
+![alt text](./Expanding_circles_compressed.gif)
