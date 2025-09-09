@@ -43,6 +43,8 @@
 
 ![VEX Controller Diagram](./Robot_Controller_THink_map_diagram.png)
 
+![Radius Extension Diagram](./robotics_thinkmap_radius_part_2_3.png)
+
 
 
 ![alt text](./pickup_cube_compressed.gif)
