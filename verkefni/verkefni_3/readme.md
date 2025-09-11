@@ -11,3 +11,6 @@
 
 
 ![Camera Colour Detection Diagram](./Robotics_Colour_Detection_by_Camera_Think_map.png)
+
+
+#[Colour Following Diagram](./Robotics_Colour_Following_Think_Map.png)
