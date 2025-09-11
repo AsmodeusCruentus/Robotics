@@ -8,6 +8,7 @@
 
 
 # Colour Detection by Camera + Vision(camera view in phone)
+## No Example Video. -Teacher saw and verified function.
 
 
 ![Camera Colour Detection Diagram](./Robotics_Colour_Detection_by_Camera_Think_map.png)
