@@ -1,0 +1,111 @@
+{
+  "brightness": 50,
+  "signatures": [
+    {
+      "name": "GREEEEN",
+      "parameters": {
+        "uMin": -7975,
+        "uMax": -6177,
+        "uMean": -7076,
+        "vMin": -3687,
+        "vMax": -2091,
+        "vMean": -2889,
+        "rgb": 3300942,
+        "type": 0,
+        "name": "GREEEEN"
+      },
+      "range": 2.5
+    },
+    {
+      "name": "ORANGIRU",
+      "parameters": {
+        "uMin": 6177,
+        "uMax": 7765,
+        "uMean": 6971,
+        "vMin": -1713,
+        "vMax": -1063,
+        "vMean": -1388,
+        "rgb": 9918283,
+        "type": 0,
+        "name": "ORANGIRU"
+      },
+      "range": 2.5
+    },
+    {
+      "name": "PURPURA",
+      "parameters": {
+        "uMin": -329,
+        "uMax": 683,
+        "uMean": 177,
+        "vMin": 6063,
+        "vMax": 9467,
+        "vMean": 7765,
+        "rgb": 3552870,
+        "type": 0,
+        "name": "PURPURA"
+      },
+      "range": 2.5
+    },
+    {
+      "name": "SIG_4",
+      "parameters": {
+        "uMin": 0,
+        "uMax": 0,
+        "uMean": 0,
+        "vMin": 0,
+        "vMax": 0,
+        "vMean": 0,
+        "rgb": 0,
+        "type": 0,
+        "name": "SIG_4"
+      },
+      "range": 2.5
+    },
+    {
+      "name": "SIG_5",
+      "parameters": {
+        "uMin": 0,
+        "uMax": 0,
+        "uMean": 0,
+        "vMin": 0,
+        "vMax": 0,
+        "vMean": 0,
+        "rgb": 0,
+        "type": 0,
+        "name": "SIG_5"
+      },
+      "range": 2.5
+    },
+    {
+      "name": "SIG_6",
+      "parameters": {
+        "uMin": 0,
+        "uMax": 0,
+        "uMean": 0,
+        "vMin": 0,
+        "vMax": 0,
+        "vMean": 0,
+        "rgb": 0,
+        "type": 0,
+        "name": "SIG_6"
+      },
+      "range": 2.5
+    },
+    {
+      "name": "SIG_7",
+      "parameters": {
+        "uMin": 0,
+        "uMax": 0,
+        "uMean": 0,
+        "vMin": 0,
+        "vMax": 0,
+        "vMean": 0,
+        "rgb": 0,
+        "type": 0,
+        "name": "SIG_7"
+      },
+      "range": 2.5
+    }
+  ],
+  "codes": []
+}
