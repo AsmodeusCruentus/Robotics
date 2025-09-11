@@ -1,5 +1,5 @@
 
-# Sonic Sensor & Light Sensor
+# Sonic Sensor & Light Sensor Pathing
 
 
 ---
