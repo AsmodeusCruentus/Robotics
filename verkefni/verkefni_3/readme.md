@@ -18,3 +18,9 @@
 
 
 ![Colour Following Diagram](./Robotics_Colour_Following_Think_Map.png)
+
+
+![robot_movements](https://streamable.com/d8ywpg)
+
+
+![robot_screen_notifications](https://streamable.com/xh2ckg)
