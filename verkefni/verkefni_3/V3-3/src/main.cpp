@@ -5,9 +5,7 @@ using namespace vex;
 
 // Skilgreiningar
 const int CENTER_FOV = 158;  
-const int OFFSET_X = 25;      
-const int DISTANCE_MAX = 30; 
-const int DISTANCE_MIN = 20; 
+// const int OFFSET_X = 25;     
 
 std::string state = "Stoppar"; 
 
@@ -29,41 +27,37 @@ int main() {
 
   while (true) {
     Vision5.takeSnapshot(Vision5__GREENBOX);
-
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    Brain.Screen.print(Vision5.largestObject.centerX);
     if (Vision5.largestObject.exists) {
-      //int objX = Vision5.largestObject.centerX;
+      int objX = Vision5.largestObject.centerX;
       int objWidth = Vision5.largestObject.width;
-
-      // Einföld nálgun: stærra width => nær
-      if (objWidth > DISTANCE_MAX) {
+      
+      if(objWidth > 150){
         LeftMotor.spin(reverse);
-        RightMotor.spin(reverse);
+        RightMotor.spin(reverse);}
+      
+      else if (objWidth < 100) {
+        LeftMotor.spin(forward);
+        RightMotor.spin(forward);
         state = "Bakkar (hlutur of nálægt)";
-      }
-      else if (objWidth > DISTANCE_MIN && objWidth < DISTANCE_MAX){
-        LeftMotor.stop(brakeType::brake);
-        RightMotor.stop(brakeType::brake);
-        state = "Stoppar - enginn hlutur";
-      }
-      /*else if (objX > CENTER_FOV + OFFSET_X) {
-        LeftMotor.spin(forward);
+      } 
+     
+      
+      else if(Vision5.largestObject.centerX > CENTER_FOV + 30 && objWidth < 100){
         RightMotor.spin(reverse);
-        task::sleep(10);
-        state = "Beygir til hægri";
-      }
-      else if (objX < CENTER_FOV - OFFSET_X) {
-        LeftMotor.spin(reverse);
-        RightMotor.spin(forward);
-        task::sleep(10);
-        state = "Beygir til vinstri";
-      }*/
-      else if (objWidth > DISTANCE_MAX) {
-       
         LeftMotor.spin(forward);
-        RightMotor.spin(forward);
-        
-        state = "Fer áfram";
+        task::sleep(10);
       }
+      else if (Vision5.largestObject.centerX < CENTER_FOV - 30 && objWidth < 100) {
+        RightMotor.spin(forward);
+        LeftMotor.spin(reverse);
+      }
+      
+      else{
+        LeftMotor.stop(brakeType::brake);
+        RightMotor.stop(brakeType::brake);}
     }
     else {
       LeftMotor.stop(brakeType::brake);
