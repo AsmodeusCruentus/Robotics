@@ -39,6 +39,11 @@ int trackingTask() {
 
 void driveAvoidObstacles() {
     while (Light.brightness() >= 70) {
+        if (Controller1.ButtonB.pressing() || Takki.value() == 1) {
+            LeftMotor.stop();
+            RightMotor.stop();
+            break;   
+        }
         int dist = DistSensor.objectDistance(mm);
         if (dist > 0 && dist < 400) { 
             LeftMotor.stop();
