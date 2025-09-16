@@ -1,97 +1,98 @@
 #include "vex.h"
-#include <string>
 using namespace vex;
 
-//------------------- Stillingar -------------------
-const int IMG_WIDTH     = 316;
-const int CENTER_FOV    = IMG_WIDTH / 2;   // 158
-const int DEAD_BAND_PX  = 10;
+const int CENTER = 158;      // 0..316
+const int DEAD   = 8;        // deadband px
+const double K   = 0.45;     // turn strength
+const int SEARCH_SPEED = 18; // %
 
-const int DISTANCE_MIN  = 20;  // of lítil -> of langt í burtu
-const int DISTANCE_MAX  = 30;  // of stór -> of nálægt
-const int TARGET_WIDTH  = (DISTANCE_MIN + DISTANCE_MAX) / 2;
+// Distance targets (tune to your setup)
+const int TOO_CLOSE_MM = 250;  // back up if nearer than this
+const int TOO_FAR_MM   = 550;  // drive forward if farther than this
 
-// P/PD stillingar
-const double KP_TURN = 0.6;    // % per px fyrir beygju
-const double KD_TURN = 0.25;   // D-hluti til að róa
-const double KP_FWD  = 1.0;    // % per px fyrir hraða fram/aftur
+// Pick the biggest visible target across GREEN/BLUE/RED
+bool getTarget(vision::object &out) {
+  int bestArea = 0;
+  vision::object best;
 
-const int SEARCH_SPEED = 20;   // % þegar hlutur finnst ekki
-
-std::string state = "Stoppar";
-
-// hjálparfall til að klemma í -100..100%
-double clampPct(double x) {
-  if (x > 100) return 100;
-  if (x < -100) return -100;
-  return x;
-}
-
-// Sýna stöðu á skjá
-int displayTask() {
-  while (true) {
-    Brain.Screen.clearScreen();
-    Brain.Screen.setCursor(1, 1);
-    Brain.Screen.print("Staða: %s", state.c_str());
-    wait(200, msec);
+  Vision5.takeSnapshot(Vision5__GREENBOX);
+  if (Vision5.largestObject.exists) {
+    int a = Vision5.largestObject.width * Vision5.largestObject.height;
+    if (a > bestArea) { bestArea = a; best = Vision5.largestObject; }
   }
-  return 0;
+
+  Vision5.takeSnapshot(Vision5__BLUEBOX);
+  if (Vision5.largestObject.exists) {
+    int a = Vision5.largestObject.width * Vision5.largestObject.height;
+    if (a > bestArea) { bestArea = a; best = Vision5.largestObject; }
+  }
+
+  Vision5.takeSnapshot(Vision5__REDBOX);
+  if (Vision5.largestObject.exists) {
+    int a = Vision5.largestObject.width * Vision5.largestObject.height;
+    if (a > bestArea) { bestArea = a; best = Vision5.largestObject; }
+  }
+
+  // ignore tiny noise blobs
+  if (bestArea >= 200) { out = best; return true; }
+  return false;
 }
 
 int main() {
   vexcodeInit();
 
-  thread t1 = thread(displayTask);
-
-  double lastErr = 0.0;
+  // stabilize vision: turn on your 3-wire light; optional tweak brightness
+  Light.on();
+  // Vision5.setBrightness(45);   // optional: uncomment if needed
 
   while (true) {
-    Vision5.takeSnapshot(Vision5__GREENBOX);
+    vision::object obj;
+    bool seen = getTarget(obj);
 
-    if (Vision5.largestObject.exists) {
-      // --- Mæla frávik/offset ---
-      int objX     = Vision5.largestObject.centerX; // 0..316
-      int objWidth = Vision5.largestObject.width;
+    if (seen) {
+      int x   = obj.centerX;
+      int err = x - CENTER;
 
-      int errX     = objX - CENTER_FOV;             // <0 vinstri, >0 hægri
-      int wErr     = TARGET_WIDTH - objWidth;       // >0 = keyra áfram (of langt)
-      double dErr  = errX - lastErr;
+      // TURN: tiny P with deadband
+      double turn = (std::abs(err) > DEAD) ? K * err : 0;
 
-      // --- Stjórnun ---
-      // beygja út frá láréttu skekkju
-      double turnCmd = KP_TURN * errX + KD_TURN * dErr;
-      if (std::abs(errX) < DEAD_BAND_PX) turnCmd = 0;
+      // FWD/BACK: prefer distance sensor
+      double fwd = 0;
+      int dmm = DistSensor.objectDistance(mm);  // returns -1 if nothing
+      if (dmm > 0) {
+        if (dmm > TOO_FAR_MM)      fwd = 25;   // go forward
+        else if (dmm < TOO_CLOSE_MM) fwd = -25; // back up
+      } else {
+        // fallback if distance has no reading: use vision width
+        if (obj.width > 140)       fwd = -20;
+        else if (obj.width < 80)   fwd = 20;
+      }
 
-      // hraði fram/aftur út frá stærð (fjarlægð)
-      double fwdCmd  = KP_FWD * wErr;
+      // mix and clamp
+      double L = std::max(-60.0, std::min(60.0, fwd - turn));
+      double R = std::max(-60.0, std::min(60.0, fwd + turn));
 
-      // blanda í vinstri/hægri mótorprósentur
-      double leftPct  = clampPct(fwdCmd - turnCmd);
-      double rightPct = clampPct(fwdCmd + turnCmd);
-
-      LeftMotor.setVelocity(leftPct, percent);
-      RightMotor.setVelocity(rightPct, percent);
+      LeftMotor.setVelocity(L, percent);
+      RightMotor.setVelocity(R, percent);
       LeftMotor.spin(forward);
       RightMotor.spin(forward);
 
-      // Stöðustrengur
-      if (turnCmd == 0 && std::abs(wErr) <= 2)      state = "Miðjar og í réttri fjarlægð";
-      else if (fwdCmd > 0)                          state = "Fer áfram";
-      else if (fwdCmd < 0)                          state = "Bakkar";
-      else if (turnCmd > 0)                         state = "Beygir til hægri";
-      else if (turnCmd < 0)                         state = "Beygir til vinstri";
-      else                                          state = "Stillir sig";
-
-      lastErr = errX;
+      // tiny debug
+      Brain.Screen.clearScreen();
+      Brain.Screen.setCursor(1,1);
+      Brain.Screen.print("x:%d w:%d d:%d L:%d R:%d",
+        x, obj.width, dmm, (int)L, (int)R);
 
     } else {
-      // --- Hlutur týndur: hæg leitarsnúningur ---
+      // search gently if nothing seen
       LeftMotor.setVelocity(-SEARCH_SPEED, percent);
       RightMotor.setVelocity( SEARCH_SPEED, percent);
       LeftMotor.spin(forward);
       RightMotor.spin(forward);
-      state = "Leitar að kassa";
-      lastErr = 0;
+
+      Brain.Screen.clearScreen();
+      Brain.Screen.setCursor(1,1);
+      Brain.Screen.print("Searching...");
     }
 
     wait(20, msec);
