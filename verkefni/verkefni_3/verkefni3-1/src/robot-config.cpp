@@ -12,6 +12,9 @@ motor LeftMotor = motor(PORT1, ratio18_1, false);
 motor RightMotor = motor(PORT3, ratio18_1, true);
 distance DistSensor = distance(PORT11);
 light Light = light(Brain.ThreeWirePort.D);
+controller Controller1;
+digital_in Takki(Brain.ThreeWirePort.A);
+
 
 
 // VEXcode generated functions
