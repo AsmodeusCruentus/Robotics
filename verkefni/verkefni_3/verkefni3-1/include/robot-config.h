@@ -7,6 +7,9 @@ extern motor LeftMotor;
 extern motor RightMotor;
 extern distance DistSensor;
 extern light Light;
+extern controller Controller1;
+extern digital_in Takki
+
 
 
 /**
