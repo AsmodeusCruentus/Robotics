@@ -37,13 +37,15 @@ int trackingTask() {
     return 0;
 }
 
+
 void driveAvoidObstacles() {
     while (Light.brightness() >= 70) {
-        if (Controller1.ButtonB.pressing() || Takki.value() == 1) {
+        if (Controller1.ButtonB.pressing() || Takki.value() == 0) {
             LeftMotor.stop();
             RightMotor.stop();
             break;   
         }
+
         int dist = DistSensor.objectDistance(mm);
         if (dist > 0 && dist < 400) { 
             LeftMotor.stop();
@@ -64,14 +66,15 @@ void driveAvoidObstacles() {
         task::sleep(20);
     }
 
+    // Make sure robot is stopped when loop ends
     LeftMotor.stop();
     RightMotor.stop();
 }
+
 
 int main() {
     while (true){
 
     driveAvoidObstacles();
     task tracker(trackingTask);
-
 }}

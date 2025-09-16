@@ -7,10 +7,8 @@ extern motor LeftMotor;
 extern motor RightMotor;
 extern distance DistSensor;
 extern light Light;
+extern digital_in Takki;
 extern controller Controller1;
-extern digital_in Takki
-
-
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

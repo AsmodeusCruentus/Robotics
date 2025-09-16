@@ -16,7 +16,6 @@ controller Controller1;
 digital_in Takki(Brain.ThreeWirePort.A);
 
 
-
 // VEXcode generated functions
 
 
