@@ -1,100 +1,78 @@
 #include "vex.h"
+#include <string>
+
 using namespace vex;
 
-const int CENTER = 158;      // 0..316
-const int DEAD   = 8;        // deadband px
-const double K   = 0.45;     // turn strength
-const int SEARCH_SPEED = 18; // %
+// Skilgreiningar
+const int CENTER_FOV = 158;  
+const int DEAD_X = 30;       // lítill dauðsvæði fyrir beygju
 
-// Distance targets (tune to your setup)
-const int TOO_CLOSE_MM = 250;  // back up if nearer than this
-const int TOO_FAR_MM   = 550;  // drive forward if farther than this
+std::string state = "Stoppar"; 
 
-// Pick the biggest visible target across GREEN/BLUE/RED
-bool getTarget(vision::object &out) {
-  int bestArea = 0;
-  vision::object best;
-
-  Vision5.takeSnapshot(Vision5__GREENBOX);
-  if (Vision5.largestObject.exists) {
-    int a = Vision5.largestObject.width * Vision5.largestObject.height;
-    if (a > bestArea) { bestArea = a; best = Vision5.largestObject; }
+// Thread sem sér um skjáinn
+int displayTask() {
+  while (true) {
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    Brain.Screen.print("Staða: %s", state.c_str());
+    this_thread::sleep_for(200); 
   }
-
-  Vision5.takeSnapshot(Vision5__BLUEBOX);
-  if (Vision5.largestObject.exists) {
-    int a = Vision5.largestObject.width * Vision5.largestObject.height;
-    if (a > bestArea) { bestArea = a; best = Vision5.largestObject; }
-  }
-
-  Vision5.takeSnapshot(Vision5__REDBOX);
-  if (Vision5.largestObject.exists) {
-    int a = Vision5.largestObject.width * Vision5.largestObject.height;
-    if (a > bestArea) { bestArea = a; best = Vision5.largestObject; }
-  }
-
-  // ignore tiny noise blobs
-  if (bestArea >= 200) { out = best; return true; }
-  return false;
+  return 0;
 }
 
 int main() {
   vexcodeInit();
 
-  // stabilize vision: turn on your 3-wire light; optional tweak brightness
-  Light.on();
-  // Vision5.setBrightness(45);   // optional: uncomment if needed
+  thread t1 = thread(displayTask);
 
   while (true) {
-    vision::object obj;
-    bool seen = getTarget(obj);
+    Vision5.takeSnapshot(Vision5__GREENBOX);
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    Brain.Screen.print(Vision5.largestObject.centerX);
 
-    if (seen) {
-      int x   = obj.centerX;
-      int err = x - CENTER;
+    if (Vision5.largestObject.exists) {
+      int objX     = Vision5.largestObject.centerX;
+      int objWidth = Vision5.largestObject.width;
 
-      // TURN: tiny P with deadband
-      double turn = (std::abs(err) > DEAD) ? K * err : 0;
-
-      // FWD/BACK: prefer distance sensor
-      double fwd = 0;
-      int dmm = DistSensor.objectDistance(mm);  // returns -1 if nothing
-      if (dmm > 0) {
-        if (dmm > TOO_FAR_MM)      fwd = 25;   // go forward
-        else if (dmm < TOO_CLOSE_MM) fwd = -25; // back up
-      } else {
-        // fallback if distance has no reading: use vision width
-        if (obj.width > 140)       fwd = -20;
-        else if (obj.width < 80)   fwd = 20;
+      // --- 1) Fyrst: stilla sjón (beygja að kassanum) ---
+      if (objX > CENTER_FOV + DEAD_X) {
+        // kassinn er til hægri -> beygja til hægri
+        RightMotor.spin(reverse);
+        LeftMotor.spin(forward);
+        task::sleep(10);
+        state = "Beygir til hægri";
+      } 
+      else if (objX < CENTER_FOV - DEAD_X) {
+        // kassinn er til vinstri -> beygja til vinstri
+        RightMotor.spin(forward);
+        LeftMotor.spin(reverse);
+        task::sleep(10);
+        state = "Beygir til vinstri";
       }
-
-      // mix and clamp
-      double L = std::max(-60.0, std::min(60.0, fwd - turn));
-      double R = std::max(-60.0, std::min(60.0, fwd + turn));
-
-      LeftMotor.setVelocity(L, percent);
-      RightMotor.setVelocity(R, percent);
-      LeftMotor.spin(forward);
-      RightMotor.spin(forward);
-
-      // tiny debug
-      Brain.Screen.clearScreen();
-      Brain.Screen.setCursor(1,1);
-      Brain.Screen.print("x:%d w:%d d:%d L:%d R:%d",
-        x, obj.width, dmm, (int)L, (int)R);
-
-    } else {
-      // search gently if nothing seen
-      LeftMotor.setVelocity(-SEARCH_SPEED, percent);
-      RightMotor.setVelocity( SEARCH_SPEED, percent);
-      LeftMotor.spin(forward);
-      RightMotor.spin(forward);
-
-      Brain.Screen.clearScreen();
-      Brain.Screen.setCursor(1,1);
-      Brain.Screen.print("Searching...");
+      // --- 2) Svo: fjarlægð (fram/bak) þegar miðjuð ---
+      else if (objWidth > 150) {
+        LeftMotor.spin(reverse);
+        RightMotor.spin(reverse);
+        state = "Bakkar (hlutur of nálægt)";
+      } 
+      else if (objWidth < 100) {
+        LeftMotor.spin(forward);
+        RightMotor.spin(forward);
+        state = "Fer áfram (hlutur of langt)";
+      } 
+      else {
+        LeftMotor.stop(brakeType::brake);
+        RightMotor.stop(brakeType::brake);
+        state = "Miðjað og í lagi";
+      }
+    }
+    else {
+      LeftMotor.stop(brakeType::brake);
+      RightMotor.stop(brakeType::brake);
+      state = "Stoppar - enginn hlutur";
     }
 
-    wait(20, msec);
+    wait(50, msec);
   }
 }
