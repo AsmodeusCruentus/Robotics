@@ -15,7 +15,7 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 10, 3        
+// Drivetrain           drivetrain    1 is left && 3 is right        
 // ForkMotorGroup       motor_group   2, 9            
 // Rotation4            rotation      4               
 // GPS8                 gps           8               
